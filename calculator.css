@@ -14,6 +14,8 @@
   --accent: #248a3d;        /* systemGreen, accessible variant */
   --accent-hover: #1e7a35;
   --accent-tint: rgba(52, 199, 89, 0.12);
+  --accent-tint-2: rgba(52, 199, 89, 0.18);
+  --on-tint: #1e7a35;       /* accent text on tint, 4.6:1+ */
   --on-accent: #ffffff;
   --switch-on: #34c759;
   --danger: #d70015;
@@ -53,6 +55,8 @@
     --accent: #30d158;
     --accent-hover: #4cd96d;
     --accent-tint: rgba(48, 209, 88, 0.16);
+    --accent-tint-2: rgba(48, 209, 88, 0.24);
+    --on-tint: #30d158;
     --on-accent: #000000;
     --switch-on: #30d158;
     --danger: #ff453a;
@@ -235,7 +239,11 @@ label.row:has(.switch:disabled) .row__label { color: var(--label-2); }
 .btn--primary:active { transform: scale(0.98); }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 .btn.is-loading { cursor: progress; opacity: 0.7; }
+.btn--tinted { background: var(--accent-tint); color: var(--on-tint); }
+.btn--tinted:hover { background: var(--accent-tint-2); }
+.btn--tinted:active { transform: scale(0.98); }
 .estimate .btn { width: 100%; }
+.estimate .btn + .btn, .estimate .link + .btn { margin-top: -6px; }
 .link { justify-self: start; font-size: 15px; text-decoration: none; }
 .link:hover { text-decoration: underline; }
 
@@ -302,6 +310,7 @@ textarea.tf__input { height: 132px; padding-top: 28px; resize: vertical; }
   .group__title { font-size: 20px; }
   .req-grid { grid-template-columns: minmax(0, 1fr); }
   .estimate { padding: 22px; }
+  .estimate .btn { padding: 0 12px; }
   .estimate__price { font-size: 38px; }
   .seg label { font-size: 14px; padding: 0 6px; }
 }

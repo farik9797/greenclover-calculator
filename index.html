@@ -91,6 +91,7 @@
       <p class="extra">Same-day cleaning (less than 24 hours’ notice) and Saturday cleaning cost 20% more. We agree on them individually.</p>
       <a class="btn btn--primary" href="#request" id="to-request">Request this cleaning</a>
       <a class="link" href="#request" id="to-estimate" hidden>Request an individual estimate</a>
+      <a class="btn btn--tinted" href="sms:+17045550100" id="text-us">Text us</a>
     </aside>
   </div>
 
@@ -133,7 +134,7 @@
     <a class="btn btn--primary" href="#estimate" tabindex="-1">See estimate</a>
   </div>
 
-  <p class="proto" lang="ru">Прототип для согласования логики. Ставки, коэффициенты и допуслуги тестовые, их заменят цифры заказчицы. Форма никуда не отправляет.</p>
+  <p class="proto" lang="ru">Прототип для согласования логики. Ставки, коэффициенты и допуслуги тестовые, их заменят цифры заказчицы. Форма никуда не отправляет. Номер для Text us тестовый.</p>
 </main>
 
 <script>
@@ -173,7 +174,8 @@ var CONFIG = {
     { id: 'baseboards', name: 'Detailed baseboards', price: 30, types: ['standard'] },
     { id: 'laundry',  name: 'Laundry, wash and fold', price: 25, types: ['standard', 'deep'] }
   ],
-  limits: { beds: [0, 8], baths: [1, 6] }
+  limits: { beds: [0, 8], baths: [1, 6] },
+  textPhone: '+17045550100'    // "Text us" number, E.164. Test value (555-01xx is reserved for fiction) — replace with GreenClover's
 };
 
 /* ===== Calculator ===== */
@@ -248,7 +250,7 @@ function render() {
   toEst.hidden = !r.individual;
   setFill();
   $('mbar-price').textContent = r.error ? 'Enter your home size' : (r.individual ? 'Individual estimate' : priceText(r) + ' per visit');
-  if (r.error) { price.innerHTML = '<span class="estimate__alt">Enter your home size</span>'; bd.innerHTML = ''; return; }
+  if (r.error) { price.innerHTML = '<span class="estimate__alt">Enter your home size</span>'; bd.innerHTML = ''; setTextUs('Hi GreenClover! I’d like a quote for a home cleaning.'); return; }
   if (r.individual) {
     price.innerHTML = '<span class="estimate__alt">Individual estimate</span>';
     note.textContent = 'For homes over ' + CONFIG.maxArea.toLocaleString('en-US') + ' sq ft we prepare the price after a walkthrough.';
@@ -273,8 +275,21 @@ function updateSummary(r) {
   var ad = CONFIG.addons.filter(function (a) { return state.addons[a.id]; }).map(function (a) { return a.name.toLowerCase(); });
   if (ad.length) parts.push('add-ons: ' + ad.join(', '));
   var p = r ? priceText(r) : 'individual estimate';
-  $('summary').textContent = 'Your estimate: ' + p + '. ' + parts.join(', ') + '.';
+  var details = parts.join(', ') + '.';
+  $('summary').textContent = 'Your estimate: ' + p + '. ' + details;
+  setTextUs(r ? 'Hi GreenClover! I’d like to book a cleaning. My estimate: ' + p + '. ' + details
+              : 'Hi GreenClover! I’d like an individual estimate. ' + details);
 }
+
+/* "Text us": opens the phone's Messages app with the company number and the estimate prefilled.
+   "?&body=" works on both iOS and Android. */
+function setTextUs(body) {
+  $('text-us').href = 'sms:' + CONFIG.textPhone + '?&body=' + encodeURIComponent(body);
+}
+(function () {
+  var d = CONFIG.textPhone.replace(/\D/g, '').slice(-10);
+  $('text-us').textContent = 'Text us at (' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+})();
 
 function syncSteppers() {
   ['beds', 'baths'].forEach(function (k) {
