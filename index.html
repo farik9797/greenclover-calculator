@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>GreenClover Eco Cleaning: cleaning cost estimate</title>
+<meta name="description" content="Estimate the price of Standard or Deep Cleaning for your home by size, rooms, condition and frequency.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+<main class="calc container" id="calculator">
+  <header class="calc__head">
+    <h1>Estimate your cleaning</h1>
+    <p>Tell us about your home and see an approximate price right away. The final price is confirmed after a Quick Walkthrough of 15 to 20 minutes.</p>
+  </header>
+
+  <div class="calc__grid">
+    <form class="panel fields" id="calc-form" novalidate>
+      <fieldset class="field">
+        <legend class="field__label">Type of cleaning</legend>
+        <div class="seg" role="radiogroup">
+          <input type="radio" name="type" id="type-standard" value="standard" checked>
+          <label for="type-standard">Standard Cleaning</label>
+          <input type="radio" name="type" id="type-deep" value="deep">
+          <label for="type-deep">Deep Cleaning</label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label class="field__label" for="area">Home size</label>
+        <div class="area">
+          <div class="input-wrap">
+            <input class="input input--unit" type="number" id="area" name="area" inputmode="numeric" min="300" max="20000" step="50" value="2000" aria-describedby="area-msg">
+            <span class="input__unit">sq ft</span>
+          </div>
+          <input class="range" type="range" id="area-range" min="300" max="10000" step="50" value="2000" aria-label="Home size slider">
+        </div>
+        <p class="msg field__hint" id="area-msg">Living area in square feet, 300 to 10,000.</p>
+      </div>
+
+      <div class="field__row field">
+        <div class="field">
+          <span class="field__label" id="beds-label">Bedrooms</span>
+          <div class="stepper" role="group" aria-labelledby="beds-label">
+            <button type="button" data-step="beds" data-dir="-1" aria-label="Fewer bedrooms">−</button>
+            <output id="beds" aria-live="polite">3</output>
+            <button type="button" data-step="beds" data-dir="1" aria-label="More bedrooms">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field__label" id="baths-label">Bathrooms</span>
+          <div class="stepper" role="group" aria-labelledby="baths-label">
+            <button type="button" data-step="baths" data-dir="-1" aria-label="Fewer bathrooms">−</button>
+            <output id="baths" aria-live="polite">2</output>
+            <button type="button" data-step="baths" data-dir="1" aria-label="More bathrooms">+</button>
+          </div>
+          <span class="field__hint">A half bath has a toilet and sink, no shower.</span>
+        </div>
+      </div>
+
+      <fieldset class="field">
+        <legend class="field__label">Home condition</legend>
+        <div class="opts" id="condition-opts"></div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field__label">How often</legend>
+        <div class="opts" id="frequency-opts"></div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field__label">Additional services</legend>
+        <div class="checks" id="addon-opts"></div>
+      </fieldset>
+    </form>
+
+    <aside class="estimate" id="estimate" aria-live="polite" aria-labelledby="estimate-label">
+      <span class="estimate__label" id="estimate-label">Estimated price</span>
+      <div class="estimate__price" id="price"></div>
+      <p class="estimate__note" id="price-note">This is an estimate, not a final quote. We confirm the price after a Quick Walkthrough of your home (15 to 20 minutes).</p>
+      <ul class="breakdown" id="breakdown"></ul>
+      <p class="extra">Same-day cleaning (less than 24 hours’ notice) and Saturday cleaning cost 20% more. We agree on them individually.</p>
+      <a class="btn btn--primary" href="#request" id="to-request">Request this cleaning</a>
+      <a class="link" href="#request" id="to-estimate" hidden>Request an individual estimate</a>
+    </aside>
+  </div>
+
+  <section class="request panel" id="request" aria-labelledby="request-title">
+    <h2 id="request-title">Send your request</h2>
+    <p>We’ll contact you to schedule the walkthrough and confirm the price.</p>
+    <div class="summary" id="summary"></div>
+    <form id="request-form" novalidate>
+      <div class="req-grid">
+        <div class="req-field">
+          <label for="r-name">Name</label>
+          <input class="input" id="r-name" name="name" autocomplete="name" required>
+          <span class="msg msg--error" id="r-name-msg" hidden>Please enter your name.</span>
+        </div>
+        <div class="req-field">
+          <label for="r-phone">Phone</label>
+          <input class="input" id="r-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(704) 555-0123" required>
+          <span class="msg msg--error" id="r-phone-msg" hidden>Enter a 10-digit US phone number.</span>
+        </div>
+        <div class="req-field full">
+          <label for="r-email">Email</label>
+          <input class="input" id="r-email" name="email" type="email" autocomplete="email" required>
+          <span class="msg msg--error" id="r-email-msg" hidden>Enter a valid email address.</span>
+        </div>
+        <div class="req-field full">
+          <label for="r-comment">Comments (optional)</label>
+          <textarea class="input" id="r-comment" name="comment" maxlength="1000"></textarea>
+        </div>
+      </div>
+      <div class="req-actions">
+        <button class="btn btn--primary" type="submit" id="r-submit">Send request</button>
+        <span class="consent">By sending, you agree to our <a href="#">Privacy Policy</a>.</span>
+      </div>
+      <div class="status status--success" id="r-success" role="status" hidden>Thank you! We’ve received your request and will be in touch soon.</div>
+    </form>
+  </section>
+
+  <div class="mbar" id="mbar" aria-hidden="true">
+    <span class="mbar__price" id="mbar-price"></span>
+    <a class="btn btn--primary" href="#estimate" tabindex="-1">See estimate</a>
+  </div>
+
+  <p class="proto" lang="ru">Прототип для согласования логики. Ставки, коэффициенты и допуслуги тестовые, их заменят цифры заказчицы. Форма никуда не отправляет.</p>
+</main>
+
+<script>
+/* ===== All rates in one place. Test values — replace with GreenClover's numbers. ===== */
+var CONFIG = {
+  maxArea: 10000,              // above this: no automatic price, individual estimate
+  minArea: 300,
+  baseFee: 50,                 // per visit, USD
+  ratePerSqFt: 0.05,           // USD per sq ft
+  perBedroom: 12,
+  perBathroom: 18,             // a half bath counts as 0.5
+  spread: 0.10,                // shown as a range: price −10% … +10%. Set 0 for a single number
+  types: {
+    standard: { name: 'Standard Cleaning', factor: 1.0, minimum: 140,
+      frequencies: [
+        { id: 'weekly',   name: 'Weekly',        factor: 0.85, note: '15% off' },
+        { id: 'biweekly', name: 'Bi-weekly',     factor: 0.90, note: '10% off', default: true },
+        { id: 'every3',   name: 'Every 3 weeks', factor: 0.95, note: '5% off' },
+        { id: 'monthly',  name: 'Monthly',       factor: 1.00, note: 'Base price' }
+      ] },
+    deep: { name: 'Deep Cleaning', factor: 1.6, minimum: 250,
+      frequencies: [
+        { id: 'initial', name: 'Initial Deep Cleaning',  factor: 1.0, note: 'Before regular visits', default: true },
+        { id: 'onetime', name: 'One-time Deep Cleaning', factor: 1.1, note: 'Single visit' }
+      ] }
+  },
+  conditions: [
+    { id: 'kept',    name: 'Well kept',              factor: 1.00, note: 'Cleaned regularly' },
+    { id: 'average', name: 'Average',                factor: 1.15, note: 'Some build-up', default: true },
+    { id: 'extra',   name: 'Needs extra attention',  factor: 1.30, note: 'Not cleaned in months' }
+  ],
+  addons: [
+    { id: 'fridge',   name: 'Inside the fridge',     price: 35, types: ['standard', 'deep'] },
+    { id: 'oven',     name: 'Inside the oven',       price: 35, types: ['standard', 'deep'] },
+    { id: 'cabinets', name: 'Inside cabinets',       price: 40, types: ['standard', 'deep'] },
+    { id: 'windows',  name: 'Interior windows',      price: 40, types: ['standard', 'deep'] },
+    { id: 'baseboards', name: 'Detailed baseboards', price: 30, types: ['standard'] },
+    { id: 'laundry',  name: 'Laundry, wash and fold', price: 25, types: ['standard', 'deep'] }
+  ],
+  limits: { beds: [0, 8], baths: [1, 6] }
+};
+
+/* ===== Calculator ===== */
+var $ = function (id) { return document.getElementById(id); };
+var state = { type: 'standard', area: 2000, beds: 3, baths: 2, condition: 'average', frequency: null, addons: {} };
+var money = function (n) { return '$' + Math.ceil(n).toLocaleString('en-US'); };
+var pct = function (f) { var p = Math.round((f - 1) * 100); return (p > 0 ? '+' : '−') + Math.abs(p) + '%'; };
+var fmtBaths = function (b) { return String(b).replace('.5', '½'); };
+
+function find(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
+function defaultOf(list) { for (var i = 0; i < list.length; i++) if (list[i].default) return list[i].id; return list[0].id; }
+
+function renderOptions() {
+  var t = CONFIG.types[state.type];
+  if (!find(t.frequencies, state.frequency)) state.frequency = defaultOf(t.frequencies);
+  $('frequency-opts').innerHTML = t.frequencies.map(function (f) {
+    return '<div class="opt"><input type="radio" name="frequency" id="f-' + f.id + '" value="' + f.id + '"' + (f.id === state.frequency ? ' checked' : '') + '>' +
+      '<label for="f-' + f.id + '"><span class="opt__name">' + f.name + '</span><span class="opt__note">' + f.note + '</span></label></div>';
+  }).join('');
+  $('condition-opts').innerHTML = CONFIG.conditions.map(function (c) {
+    return '<div class="opt"><input type="radio" name="condition" id="c-' + c.id + '" value="' + c.id + '"' + (c.id === state.condition ? ' checked' : '') + '>' +
+      '<label for="c-' + c.id + '"><span class="opt__name">' + c.name + '</span><span class="opt__note">' + c.note + '</span></label></div>';
+  }).join('');
+  $('addon-opts').innerHTML = CONFIG.addons.map(function (a) {
+    var ok = a.types.indexOf(state.type) !== -1;
+    if (!ok) delete state.addons[a.id];
+    return '<label class="check"><input type="checkbox" name="addon" value="' + a.id + '"' + (state.addons[a.id] ? ' checked' : '') + (ok ? '' : ' disabled') + '>' +
+      '<span>' + a.name + (ok ? '' : ' (included in Deep)') + '</span><span class="check__price">+' + money(a.price) + '</span></label>';
+  }).join('');
+}
+
+/* Price as shown: a range around the total, never below the minimum order; rounded up to whole dollars */
+function priceText(r) {
+  if (!CONFIG.spread) return money(r.total);
+  var lo = Math.max(r.total * (1 - CONFIG.spread), r.minimum), hi = r.total * (1 + CONFIG.spread);
+  return money(lo) + '–' + money(hi);
+}
+
+function estimate() {
+  var t = CONFIG.types[state.type];
+  var a = state.area;
+  if (!(a >= CONFIG.minArea)) return { error: 'Enter a home size of at least ' + CONFIG.minArea + ' sq ft.' };
+  if (a > CONFIG.maxArea) return { individual: true };
+  var lines = [];
+  var size = CONFIG.baseFee + a * CONFIG.ratePerSqFt;
+  lines.push(['Home size, ' + a.toLocaleString('en-US') + ' sq ft', size]);
+  var beds = state.beds * CONFIG.perBedroom, baths = state.baths * CONFIG.perBathroom;
+  lines.push(['Bedrooms × ' + state.beds, beds]);
+  lines.push(['Bathrooms × ' + fmtBaths(state.baths), baths]);
+  var sum = size + beds + baths;
+  if (t.factor !== 1) { lines.push([t.name + ' ' + pct(t.factor), sum * (t.factor - 1)]); sum *= t.factor; }
+  var c = find(CONFIG.conditions, state.condition);
+  if (c.factor !== 1) { lines.push(['Condition: ' + c.name.toLowerCase() + ' ' + pct(c.factor), sum * (c.factor - 1)]); sum *= c.factor; }
+  var f = find(t.frequencies, state.frequency);
+  if (f.factor !== 1) { lines.push([f.name + ' ' + pct(f.factor), sum * (f.factor - 1)]); sum *= f.factor; }
+  CONFIG.addons.forEach(function (ad) { if (state.addons[ad.id]) { lines.push([ad.name, ad.price]); sum += ad.price; } });
+  var minApplied = sum < t.minimum;
+  if (minApplied) sum = t.minimum;
+  return { total: sum, lines: lines, minApplied: minApplied, minimum: t.minimum };
+}
+
+function render() {
+  var r = estimate();
+  var price = $('price'), bd = $('breakdown');
+  var toReq = $('to-request'), toEst = $('to-estimate'), note = $('price-note');
+  var msg = $('area-msg'), area = $('area');
+  area.setAttribute('aria-invalid', r.error ? 'true' : 'false');
+  msg.className = r.error ? 'msg msg--error' : 'msg field__hint';
+  msg.textContent = r.error || (r.individual ? 'Over ' + CONFIG.maxArea.toLocaleString('en-US') + ' sq ft we price each home individually.' : 'Living area in square feet, ' + CONFIG.minArea + ' to ' + CONFIG.maxArea.toLocaleString('en-US') + '.');
+  toReq.hidden = !!(r.error || r.individual);
+  toEst.hidden = !r.individual;
+  $('mbar-price').textContent = r.error ? 'Enter your home size' : (r.individual ? 'Individual estimate' : priceText(r) + ' per visit');
+  if (r.error) { price.innerHTML = '<span class="estimate__per">Enter your home size</span>'; bd.innerHTML = ''; return; }
+  if (r.individual) {
+    price.innerHTML = '<span class="estimate__per">Individual estimate</span>';
+    note.textContent = 'For homes over ' + CONFIG.maxArea.toLocaleString('en-US') + ' sq ft we prepare the price after a walkthrough.';
+    bd.innerHTML = '';
+    toEst.className = 'btn btn--primary';
+    updateSummary(null);
+    return;
+  }
+  note.textContent = 'This is an estimate, not a final quote. We confirm the price after a Quick Walkthrough of your home (15 to 20 minutes).';
+  price.innerHTML = priceText(r) + ' <span class="estimate__per">per visit</span>';
+  bd.innerHTML = r.lines.map(function (l) {
+    var v = l[1];
+    return '<li><span>' + l[0] + '</span><span>' + (v < 0 ? '−' + money(Math.round(-v)) : money(Math.round(v))) + '</span></li>';
+  }).join('') + (r.minApplied ? '<li><span>Minimum order</span><span>' + money(r.minimum) + '</span></li>' : '');
+  updateSummary(r);
+}
+
+function updateSummary(r) {
+  var t = CONFIG.types[state.type];
+  var parts = [t.name, state.area.toLocaleString('en-US') + ' sq ft', state.beds + ' bed', fmtBaths(state.baths) + ' bath',
+    find(CONFIG.conditions, state.condition).name, find(t.frequencies, state.frequency).name];
+  var ad = CONFIG.addons.filter(function (a) { return state.addons[a.id]; }).map(function (a) { return a.name.toLowerCase(); });
+  if (ad.length) parts.push('add-ons: ' + ad.join(', '));
+  var p = r ? priceText(r) : 'individual estimate';
+  $('summary').textContent = 'Your estimate: ' + p + '. ' + parts.join(', ') + '.';
+}
+
+function syncSteppers() {
+  ['beds', 'baths'].forEach(function (k) {
+    var lim = CONFIG.limits[k];
+    $(k).textContent = k === 'baths' ? fmtBaths(state[k]) : state[k];
+    document.querySelector('[data-step="' + k + '"][data-dir="-1"]').disabled = state[k] <= lim[0];
+    document.querySelector('[data-step="' + k + '"][data-dir="1"]').disabled = state[k] >= lim[1];
+  });
+}
+
+/* Events */
+document.getElementById('calc-form').addEventListener('change', function (e) {
+  var el = e.target;
+  if (el.name === 'type') { state.type = el.value; renderOptions(); }
+  if (el.name === 'frequency') state.frequency = el.value;
+  if (el.name === 'condition') state.condition = el.value;
+  if (el.name === 'addon') state.addons[el.value] = el.checked;
+  render();
+});
+$('area').addEventListener('input', function () {
+  var v = parseInt(this.value, 10);
+  state.area = isNaN(v) ? 0 : v;
+  if (v >= CONFIG.minArea) $('area-range').value = Math.min(v, CONFIG.maxArea);
+  render();
+});
+$('area-range').addEventListener('input', function () {
+  state.area = parseInt(this.value, 10);
+  $('area').value = state.area;
+  render();
+});
+document.querySelectorAll('[data-step]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var k = b.getAttribute('data-step'), d = +b.getAttribute('data-dir');
+    var step = k === 'baths' ? 0.5 : 1, lim = CONFIG.limits[k];
+    state[k] = Math.min(lim[1], Math.max(lim[0], state[k] + d * step));
+    syncSteppers(); render();
+  });
+});
+
+/* Preselect type from the service page: ?type=deep */
+(function () {
+  var m = /[?&]type=(standard|deep)\b/.exec(location.search);
+  if (m) { state.type = m[1]; $('type-' + m[1]).checked = true; }
+})();
+
+/* Request form (demo, no sending) */
+$('r-phone').addEventListener('input', function () {
+  var d = this.value.replace(/\D/g, '').replace(/^1(?=\d{10})/, '').slice(0, 10);
+  var out = d;
+  if (d.length > 6) out = '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+  else if (d.length > 3) out = '(' + d.slice(0, 3) + ') ' + d.slice(3);
+  else if (d.length) out = '(' + d;
+  this.value = out;
+});
+$('request-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var checks = [
+    ['r-name', function (v) { return v.trim().length > 0; }],
+    ['r-phone', function (v) { return v.replace(/\D/g, '').length === 10; }],
+    ['r-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }]
+  ];
+  var firstBad = null;
+  checks.forEach(function (c) {
+    var el = $(c[0]), ok = c[1](el.value);
+    el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    $(c[0] + '-msg').hidden = ok;
+    if (!ok && !firstBad) firstBad = el;
+  });
+  if (firstBad) { firstBad.focus(); return; }
+  var btn = $('r-submit');
+  btn.disabled = true; btn.classList.add('is-loading'); btn.textContent = 'Sending…';
+  setTimeout(function () {
+    btn.hidden = true;
+    $('r-success').hidden = false;
+  }, 700);
+});
+
+renderOptions(); syncSteppers(); render();
+
+/* Hide the mobile bar while the estimate card or the request form is on screen */
+if ('IntersectionObserver' in window) {
+  var seen = {};
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
+    $('mbar').classList.toggle('is-off', !!(seen.estimate || seen.request));
+  });
+  io.observe($('estimate')); io.observe($('request'));
+}
+</script>
+</body>
+</html>
