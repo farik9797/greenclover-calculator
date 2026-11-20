@@ -2,79 +2,84 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <title>GreenClover Eco Cleaning: cleaning cost estimate</title>
 <meta name="description" content="Estimate the price of Standard or Deep Cleaning for your home by size, rooms, condition and frequency.">
-<link rel="preconnect" href="https://api.fontshare.com">
-<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="calculator.css">
 </head>
 <body>
-<main class="calc container" id="calculator">
-  <header class="calc__head">
+<main class="page" id="calculator">
+  <header class="intro">
     <h1>Estimate your cleaning</h1>
     <p>Tell us about your home and see an approximate price right away. The final price is confirmed after a Quick Walkthrough of 15 to 20 minutes.</p>
   </header>
 
-  <div class="calc__grid">
-    <form class="panel fields" id="calc-form" novalidate>
-      <fieldset class="field">
-        <legend class="field__label">Type of cleaning</legend>
-        <div class="seg" role="radiogroup">
+  <div class="layout">
+    <form class="config" id="calc-form" novalidate>
+      <fieldset class="group">
+        <legend class="group__title">Type of cleaning</legend>
+        <div class="seg" role="radiogroup" aria-label="Type of cleaning">
           <input type="radio" name="type" id="type-standard" value="standard" checked>
           <label for="type-standard">Standard Cleaning</label>
           <input type="radio" name="type" id="type-deep" value="deep">
           <label for="type-deep">Deep Cleaning</label>
+          <span class="seg__thumb" aria-hidden="true"></span>
         </div>
       </fieldset>
 
-      <div class="field">
-        <label class="field__label" for="area">Home size</label>
-        <div class="area">
-          <div class="input-wrap">
-            <input class="input input--unit" type="number" id="area" name="area" inputmode="numeric" min="300" max="20000" step="50" value="2000" aria-describedby="area-msg">
-            <span class="input__unit">sq ft</span>
+      <section class="group" aria-labelledby="size-title">
+        <h2 class="group__title" id="size-title">Your home</h2>
+        <div class="list">
+          <label class="row" for="area">
+            <span class="row__label">Home size</span>
+            <span class="area-input">
+              <input type="number" id="area" name="area" inputmode="numeric" min="300" max="20000" step="50" value="2000" aria-describedby="area-msg">
+              <span>sq ft</span>
+            </span>
+          </label>
+          <div class="row slider-row">
+            <input class="slider" type="range" id="area-range" min="300" max="10000" step="50" value="2000" aria-label="Home size slider">
           </div>
-          <input class="range" type="range" id="area-range" min="300" max="10000" step="50" value="2000" aria-label="Home size slider">
+          <div class="row">
+            <span class="row__label" id="beds-label">Bedrooms</span>
+            <output class="count" id="beds" aria-live="polite">3</output>
+            <span class="stepper" role="group" aria-labelledby="beds-label">
+              <button type="button" data-step="beds" data-dir="-1" aria-label="Fewer bedrooms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+              <button type="button" data-step="beds" data-dir="1" aria-label="More bedrooms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+            </span>
+          </div>
+          <div class="row">
+            <span class="row__label" id="baths-label">Bathrooms<span class="row__sub">A half bath has a toilet and sink, no shower.</span></span>
+            <output class="count" id="baths" aria-live="polite">2</output>
+            <span class="stepper" role="group" aria-labelledby="baths-label">
+              <button type="button" data-step="baths" data-dir="-1" aria-label="Fewer bathrooms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+              <button type="button" data-step="baths" data-dir="1" aria-label="More bathrooms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+            </span>
+          </div>
         </div>
-        <p class="msg field__hint" id="area-msg">Living area in square feet, 300 to 10,000.</p>
-      </div>
+        <p class="footnote" id="area-msg">Living area in square feet, 300 to 10,000.</p>
+      </section>
 
-      <div class="field__row field">
-        <div class="field">
-          <span class="field__label" id="beds-label">Bedrooms</span>
-          <div class="stepper" role="group" aria-labelledby="beds-label">
-            <button type="button" data-step="beds" data-dir="-1" aria-label="Fewer bedrooms">−</button>
-            <output id="beds" aria-live="polite">3</output>
-            <button type="button" data-step="beds" data-dir="1" aria-label="More bedrooms">+</button>
-          </div>
-        </div>
-        <div class="field">
-          <span class="field__label" id="baths-label">Bathrooms</span>
-          <div class="stepper" role="group" aria-labelledby="baths-label">
-            <button type="button" data-step="baths" data-dir="-1" aria-label="Fewer bathrooms">−</button>
-            <output id="baths" aria-live="polite">2</output>
-            <button type="button" data-step="baths" data-dir="1" aria-label="More bathrooms">+</button>
-          </div>
-          <span class="field__hint">A half bath has a toilet and sink, no shower.</span>
-        </div>
-      </div>
-
-      <fieldset class="field">
-        <legend class="field__label">Home condition</legend>
+      <fieldset class="group">
+        <legend class="group__title">Home condition</legend>
         <div class="opts" id="condition-opts"></div>
       </fieldset>
 
-      <fieldset class="field">
-        <legend class="field__label">How often</legend>
+      <fieldset class="group">
+        <legend class="group__title">How often</legend>
         <div class="opts" id="frequency-opts"></div>
       </fieldset>
 
-      <fieldset class="field">
-        <legend class="field__label">Additional services</legend>
-        <div class="checks" id="addon-opts"></div>
+      <fieldset class="group">
+        <legend class="group__title">Additional services</legend>
+        <div class="list" id="addon-opts"></div>
       </fieldset>
     </form>
 
@@ -89,30 +94,30 @@
     </aside>
   </div>
 
-  <section class="request panel" id="request" aria-labelledby="request-title">
+  <section class="request" id="request" aria-labelledby="request-title">
     <h2 id="request-title">Send your request</h2>
     <p>We’ll contact you to schedule the walkthrough and confirm the price.</p>
     <div class="summary" id="summary"></div>
     <form id="request-form" novalidate>
       <div class="req-grid">
-        <div class="req-field">
-          <label for="r-name">Name</label>
-          <input class="input" id="r-name" name="name" autocomplete="name" required>
-          <span class="msg msg--error" id="r-name-msg" hidden>Please enter your name.</span>
+        <div class="tf">
+          <input class="tf__input" id="r-name" name="name" autocomplete="name" placeholder=" " required>
+          <label class="tf__label" for="r-name">Name</label>
+          <span class="msg" id="r-name-msg" hidden>Please enter your name.</span>
         </div>
-        <div class="req-field">
-          <label for="r-phone">Phone</label>
-          <input class="input" id="r-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(704) 555-0123" required>
-          <span class="msg msg--error" id="r-phone-msg" hidden>Enter a 10-digit US phone number.</span>
+        <div class="tf">
+          <input class="tf__input" id="r-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder=" " required>
+          <label class="tf__label" for="r-phone">Phone</label>
+          <span class="msg" id="r-phone-msg" hidden>Enter a 10-digit US phone number.</span>
         </div>
-        <div class="req-field full">
-          <label for="r-email">Email</label>
-          <input class="input" id="r-email" name="email" type="email" autocomplete="email" required>
-          <span class="msg msg--error" id="r-email-msg" hidden>Enter a valid email address.</span>
+        <div class="tf full">
+          <input class="tf__input" id="r-email" name="email" type="email" autocomplete="email" placeholder=" " required>
+          <label class="tf__label" for="r-email">Email</label>
+          <span class="msg" id="r-email-msg" hidden>Enter a valid email address.</span>
         </div>
-        <div class="req-field full">
-          <label for="r-comment">Comments (optional)</label>
-          <textarea class="input" id="r-comment" name="comment" maxlength="1000"></textarea>
+        <div class="tf full">
+          <textarea class="tf__input" id="r-comment" name="comment" maxlength="1000" placeholder=" "></textarea>
+          <label class="tf__label" for="r-comment">Comments (optional)</label>
         </div>
       </div>
       <div class="req-actions">
@@ -124,7 +129,7 @@
   </section>
 
   <div class="mbar" id="mbar" aria-hidden="true">
-    <span class="mbar__price" id="mbar-price"></span>
+    <span class="mbar__price"><small>Estimated price</small><span id="mbar-price"></span></span>
     <a class="btn btn--primary" href="#estimate" tabindex="-1">See estimate</a>
   </div>
 
@@ -195,8 +200,9 @@ function renderOptions() {
   $('addon-opts').innerHTML = CONFIG.addons.map(function (a) {
     var ok = a.types.indexOf(state.type) !== -1;
     if (!ok) delete state.addons[a.id];
-    return '<label class="check"><input type="checkbox" name="addon" value="' + a.id + '"' + (state.addons[a.id] ? ' checked' : '') + (ok ? '' : ' disabled') + '>' +
-      '<span>' + a.name + (ok ? '' : ' (included in Deep)') + '</span><span class="check__price">+' + money(a.price) + '</span></label>';
+    return '<label class="row"><span class="row__label">' + a.name + (ok ? '' : '<span class="row__sub">Included in Deep Cleaning</span>') + '</span>' +
+      '<span class="row__detail">+' + money(a.price) + '</span>' +
+      '<input class="switch" type="checkbox" role="switch" name="addon" value="' + a.id + '"' + (state.addons[a.id] ? ' checked' : '') + (ok ? '' : ' disabled') + '></label>';
   }).join('');
 }
 
@@ -236,14 +242,15 @@ function render() {
   var toReq = $('to-request'), toEst = $('to-estimate'), note = $('price-note');
   var msg = $('area-msg'), area = $('area');
   area.setAttribute('aria-invalid', r.error ? 'true' : 'false');
-  msg.className = r.error ? 'msg msg--error' : 'msg field__hint';
+  msg.className = r.error ? 'footnote is-error' : 'footnote';
   msg.textContent = r.error || (r.individual ? 'Over ' + CONFIG.maxArea.toLocaleString('en-US') + ' sq ft we price each home individually.' : 'Living area in square feet, ' + CONFIG.minArea + ' to ' + CONFIG.maxArea.toLocaleString('en-US') + '.');
   toReq.hidden = !!(r.error || r.individual);
   toEst.hidden = !r.individual;
+  setFill();
   $('mbar-price').textContent = r.error ? 'Enter your home size' : (r.individual ? 'Individual estimate' : priceText(r) + ' per visit');
-  if (r.error) { price.innerHTML = '<span class="estimate__per">Enter your home size</span>'; bd.innerHTML = ''; return; }
+  if (r.error) { price.innerHTML = '<span class="estimate__alt">Enter your home size</span>'; bd.innerHTML = ''; return; }
   if (r.individual) {
-    price.innerHTML = '<span class="estimate__per">Individual estimate</span>';
+    price.innerHTML = '<span class="estimate__alt">Individual estimate</span>';
     note.textContent = 'For homes over ' + CONFIG.maxArea.toLocaleString('en-US') + ' sq ft we prepare the price after a walkthrough.';
     bd.innerHTML = '';
     toEst.className = 'btn btn--primary';
@@ -276,6 +283,11 @@ function syncSteppers() {
     document.querySelector('[data-step="' + k + '"][data-dir="-1"]').disabled = state[k] <= lim[0];
     document.querySelector('[data-step="' + k + '"][data-dir="1"]').disabled = state[k] >= lim[1];
   });
+}
+
+function setFill() {
+  var r = $('area-range');
+  r.style.setProperty('--fill', ((r.value - r.min) / (r.max - r.min) * 100) + '%');
 }
 
 /* Events */
